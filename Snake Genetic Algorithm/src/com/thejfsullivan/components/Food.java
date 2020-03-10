@@ -28,7 +28,7 @@ public class Food extends Cell {
 	}
 	
 	public void randomizeLocation() {
-		int cols = (p.width / size) - 2;
+		int cols = (500 / size) - 2; // TODO: fix this size thingy
 		int rows = (p.height / size) - 3;
 		
 		x = size + (int) Math.floor(rand.nextInt(cols)) * size;
