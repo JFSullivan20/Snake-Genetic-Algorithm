@@ -38,7 +38,7 @@ public class SnakeGA extends PApplet {
 
 	// method used only for setting the size of the window
 	public void settings() {
-		size(1000, 500);
+		size(1000, 540);
 	}
 
 	public void setup() {
@@ -69,7 +69,7 @@ public class SnakeGA extends PApplet {
 		}
 
 		if (population.currentLongestSnake.getBrain().inputs != null)
-			population.currentLongestSnake.getBrain().draw(550, 50, 400, 400);
+			population.currentLongestSnake.getBrain().draw(550, 70, 400, 450);
 
 		// Display some info
 		fill(255);
@@ -77,30 +77,36 @@ public class SnakeGA extends PApplet {
 		if (population.bestEverSnakeFitness != null) {
 			bestLength = population.bestEverSnakeLength.length;
 			bestFitness = population.bestEverSnakeFitness.fitness();
-			bestFitness = Math.floor(bestFitness);
 		}
-		text("Generation #:" + population.getGeneration() + "    Longest Ever:" + bestLength + "  Last Avg:"
-				+ (Math.round(population.avgLength * 100.0) / 100.0) + "    Best Fitness:" + bestFitness, 5, 18);
+		text("Generation #:" + population.getGeneration(), 5, 18);
+		text("Frame Rate:" + Float.toString(frameRate).substring(0, Math.min(5, Float.toString(frameRate).length())), 5, 36);
+		textAlign(CENTER);
+		text("Longest Ever:" + bestLength, width / 2, 18);
+		text("Avg Length:" + Double.toString(population.avgLength).substring(0, Math.min(5, Double.toString(population.avgLength).length())), width / 2, 36);
+		textAlign(RIGHT);
+		text("Max Fitness:" + String.format("%6.3e", bestFitness), width - 5, 18);
+		text("Avg Fitness:" + String.format( "%6.3e", population.avgFitness), width - 5, 36);
+		
 
 		// block border
     	fill(0,0,255);
-    	for (int i = 1; i < width / size; i++ ) {
-    		rect(i * size, size, size, size);
+    	for (int i = 1; i < 500 / size; i++ ) {
+    		rect(i * size, size * 3, size, size);
     		rect(i * size, height - size, size, size);
-    		rect(0, i * size, size, size);
-    		rect(width - size, i * size, size, size);
+    		rect(0, (i + 2) * size, size, size);
+    		rect(500 - size, (i + 2) * size, size, size);
     	}
 		
 		// lined border
-//		stroke(0, 0, 255);
-//		strokeWeight(1);
-//		// TODO: fix this size thingy
-//		line(size, size * 2, size, height - size);
-//		line(size, size * 2, 500 - size, size * 2);
-//		line(size, height - size, 500 - size, height - size);
-//		line(500 - size, size * 2, 500 - size, height - size);
-//		stroke(0);
-//    	
+		stroke(0, 0, 255);
+		strokeWeight(1);
+		// TODO: fix this size thingy
+		line(size, size * 4, size, height - size);
+		line(size, size * 4, 500 - size, size * 4);
+		line(size, height - size, 500 - size, height - size);
+		line(500 - size, size * 4, 500 - size, height - size);
+		stroke(0);
+    	
 //    	if (snake.eat(food)) {
 //    		do {
 //    			food.randomizeLocation();
@@ -126,12 +132,12 @@ public class SnakeGA extends PApplet {
 //		case DOWN:
 //			snake.changeDirection(0, 1);
 //			break;
-//		case LEFT:
-//			snake.changeDirection(-1, 0);
-//			break;
-//		case RIGHT:
-//			snake.changeDirection(1, 0);
-//			break;
+		case LEFT:
+			rate -= 5;
+			break;
+		case RIGHT:
+			rate += 5;
+			break;
 		case 32: // space bar
 			population.showAll = !population.showAll;
 			break;

@@ -14,6 +14,7 @@ public class Population {
 	Snake currentLongestSnake;
 	int currentBestLength = 0;
 	double maxFitness = 0;
+	double avgFitness = 0;
 
 	Snake bestEverSnakeFitness;
 	Snake bestEverSnakeLength;
@@ -128,7 +129,7 @@ public class Population {
 
 			currentBestLength = Math.max(currentBestLength, maxLength);
 
-			if (!currentLongestSnake.isAlive() || maxLength > currentLongestSnake.length + 2) {
+			if (!currentLongestSnake.isAlive() || maxLength > currentLongestSnake.length + 4) {
 				currentLongestSnake = snakes[maxIndex];
 			}
 		}
@@ -137,12 +138,15 @@ public class Population {
 	public void setBestSnakeFitness() {
 		// calculate max fitness
 		int maxIndex = 0;
+		double totalFitness = 0;
 		for (int i = 0; i < snakes.length; i++) {
+			totalFitness += snakes[i].fitness();
 			if (snakes[i].fitness() > maxFitness) {
 				maxFitness = snakes[i].fitness();
 				maxIndex = i;
 			}
 		}
+		avgFitness = totalFitness / snakes.length;
 		// if best this gen is better than the best ever then set the best ever as the
 		// best this gen
 		if (bestEverSnakeFitness == null || maxFitness > bestEverSnakeFitness.fitness()) {
@@ -153,7 +157,7 @@ public class Population {
 	public void setBestSnakeLength() {
 		// calculate max fitness
 		int maxIndex = 0;
-		int totalLength = 0;
+		double totalLength = 0;
 		for (int i = 0; i < snakes.length; i++) {
 			totalLength += snakes[i].length;
 			if (snakes[i].length > maxLength) {

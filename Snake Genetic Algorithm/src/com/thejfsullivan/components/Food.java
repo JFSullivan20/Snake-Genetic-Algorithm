@@ -32,7 +32,7 @@ public class Food extends Cell {
 		int rows = (p.height / size) - 3;
 		
 		x = size + (int) Math.floor(rand.nextInt(cols)) * size;
-		y = size * 2 + (int) Math.floor(rand.nextInt(rows)) * size;
+		y = size * 4 + (int) Math.floor(rand.nextInt(rows)) * size;
 	}
 
 }

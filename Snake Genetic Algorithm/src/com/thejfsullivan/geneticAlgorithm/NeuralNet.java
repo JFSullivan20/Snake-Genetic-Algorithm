@@ -283,6 +283,7 @@ public class NeuralNet {
 			p.fill(0);
 		}
 		p.fill(0);
+		p.stroke(0);
 	}
 
 }

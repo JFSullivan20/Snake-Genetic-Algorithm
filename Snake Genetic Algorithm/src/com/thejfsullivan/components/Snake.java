@@ -72,7 +72,7 @@ public class Snake {
 
 		minX = size;
 		maxX = 500 - 2 * size; // TODO: fix this size thingy
-		minY = 2 * size;
+		minY = 4 * size;
 		maxY = p.height - 2 * size;
 		movesLeft = ((maxX - minX) / size) * ((maxY - minY) / size) / 3;
 		brain = new NeuralNet(p, 28, 19, 10, 4);
@@ -215,7 +215,7 @@ public class Snake {
 	}
 
 	public void calculateFitness() {
-		// fitness = timeAlive + Math.pow(2, length + 1) * score;
+//		fitness = timeAlive + Math.pow(2, length) * score;
 		fitness = timeAlive + (Math.pow(2, length) + Math.pow(length, 2.1) * 500)
 				- (Math.pow(length, 1.2) * Math.pow(0.25 * timeAlive, 1.3));
 	}
