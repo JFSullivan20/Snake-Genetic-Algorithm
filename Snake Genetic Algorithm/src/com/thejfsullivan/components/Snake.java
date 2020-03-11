@@ -77,7 +77,7 @@ public class Snake {
 		movesLeft = ((maxX - minX) / size) * ((maxY - minY) / size) / 3;
 		brain = new NeuralNet(p, 28, 19, 10, 4);
 	}
-	
+
 	public NeuralNet getBrain() {
 		return brain;
 	}
@@ -164,8 +164,8 @@ public class Snake {
 		head.x += xVel * size;
 		head.y += yVel * size;
 
-//		head.x = PApplet.constrain(head.x, size, p.width - 2 * size);
-//		head.y = PApplet.constrain(head.y, size * 2, p.height - 2 * size);
+		// head.x = PApplet.constrain(head.x, size, p.width - 2 * size);
+		// head.y = PApplet.constrain(head.y, size * 2, p.height - 2 * size);
 
 		movesTillFruit++;
 		movesLeft--;
@@ -193,7 +193,7 @@ public class Snake {
 
 		// increase lifespan
 		// TODO: mess with this number
-		movesLeft += 100;
+		movesLeft += 75;
 	}
 
 	public boolean death() {
@@ -211,8 +211,13 @@ public class Snake {
 	}
 
 	public double fitness() {
-//		return timeAlive + Math.pow(2, length + 1) * score;
-		return timeAlive + (Math.pow(2, length) + Math.pow(length, 2.1) * 500) - (Math.pow(length, 1.2) * Math.pow(0.25 * timeAlive, 1.3));
+		return fitness;
+	}
+
+	public void calculateFitness() {
+		// fitness = timeAlive + Math.pow(2, length + 1) * score;
+		fitness = timeAlive + (Math.pow(2, length) + Math.pow(length, 2.1) * 500)
+				- (Math.pow(length, 1.2) * Math.pow(0.25 * timeAlive, 1.3));
 	}
 
 	public void look() {
@@ -278,12 +283,12 @@ public class Snake {
 		distance++;
 
 		while (position.x >= minX && position.x <= maxX && position.y >= minY && position.y <= maxY) {
-			
-			//check for food at the position
-			  if (!foodIsFound && position.x == food.x && position.y == food.y) {
-			    visionInDirection[0] = 1;
-			    foodIsFound = true;
-			  }
+
+			// check for food at the position
+			if (!foodIsFound && position.x == food.x && position.y == food.y) {
+				visionInDirection[0] = 1;
+				foodIsFound = true;
+			}
 
 			if (!foundTail && tail.contains(new BodyPart((int) position.x, (int) position.y))) {
 				foundTail = true;

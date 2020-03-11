@@ -67,15 +67,15 @@ public class Matrix {
 	public void randomize() {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				matrix[i][j] = rand.nextGaussian();
-				
-				// set the boundaries to 1 and -1
-				if (matrix[i][j] > 1) {
-					matrix[i][j] = 1;
-				}
-				if (matrix[i][j] < -1) {
-					matrix[i][j] = -1;
-				}
+				matrix[i][j] = -1 + rand.nextInt(3);
+
+				// // set the boundaries to 1 and -1
+				// if (matrix[i][j] > 1) {
+				// matrix[i][j] = 1;
+				// }
+				// if (matrix[i][j] < -1) {
+				// matrix[i][j] = -1;
+				// }
 			}
 		}
 	}
@@ -193,7 +193,7 @@ public class Matrix {
 	public double sigmoid(double x) {
 		return 1 / (1 + Math.pow((float) Math.E, -x));
 	}
-	
+
 	// applies the activation function(relu) to each element of the matrix
 	public Matrix relu() {
 		Matrix n = new Matrix(rows, cols);
@@ -208,7 +208,7 @@ public class Matrix {
 	public double relu(double x) {
 		return Math.max(0, x);
 	}
-	
+
 	// returns the matrix which is this matrix with the bottom layer removed
 	public Matrix removeBottomLayer() {
 		Matrix n = new Matrix(rows - 1, cols);
@@ -229,13 +229,13 @@ public class Matrix {
 				if (r < mutationRate) { // if chosen to be mutated
 					matrix[i][j] += rand.nextGaussian() / 5; // add a random value to it (can be negative)
 
-					// set the boundaries to 1 and -1
-					if (matrix[i][j] > 1) {
-						matrix[i][j] = 1;
-					}
-					if (matrix[i][j] < -1) {
-						matrix[i][j] = -1;
-					}
+					// // set the boundaries to 1 and -1
+					// if (matrix[i][j] > 1) {
+					// matrix[i][j] = 1;
+					// }
+					// if (matrix[i][j] < -1) {
+					// matrix[i][j] = -1;
+					// }
 				}
 			}
 		}
@@ -253,7 +253,7 @@ public class Matrix {
 			for (int j = 0; j < cols; j++) {
 
 				if ((i < randR) || (i == randR && j <= randC)) { // if before the random point then copy from this
-																	// matric
+					// matrix
 					child.matrix[i][j] = matrix[i][j];
 				} else { // if after the random point then copy from the parameter array
 					child.matrix[i][j] = partner.matrix[i][j];
@@ -262,16 +262,16 @@ public class Matrix {
 		}
 		return child;
 	}
-	
+
 	public Matrix uniformCrossover(Matrix partner) {
 		Matrix child = new Matrix(rows, cols);
-		
+
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 
 				double r = rand.nextDouble();
 				child.matrix[i][j] = r > 0.5 ? matrix[i][j] : partner.matrix[i][j];
-				
+
 			}
 		}
 		return child;

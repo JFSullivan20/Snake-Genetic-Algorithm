@@ -7,7 +7,7 @@ import processing.data.TableRow;
 
 public class NeuralNet {
 	PApplet p;
-	
+
 	int inputNodes;
 	int hiddenNodes1;
 	int hiddenNodes2;
@@ -16,7 +16,7 @@ public class NeuralNet {
 	Matrix whi;// weights between the input nodes and the hidden nodes
 	Matrix whh;// weights between the hidden nodes and the second layer hidden nodes
 	Matrix woh;// weights between the second hidden layer nodes and the output nodes
-	
+
 	Matrix inputs;
 	Matrix hiddenOutputs;
 	Matrix hiddenOutputs2;
@@ -24,7 +24,7 @@ public class NeuralNet {
 
 	public NeuralNet(PApplet p, int i, int h1, int h2, int o) {
 		this.p = p;
-		
+
 		inputNodes = i;
 		hiddenNodes1 = h1;
 		hiddenNodes2 = h2;
@@ -49,30 +49,30 @@ public class NeuralNet {
 	public double[] output(double[] inputsArr) {
 		// convert array to matrix
 		inputs = Matrix.singleColumnMatrixFromArray(inputsArr);
-		
+
 		// add bias
 		inputs = inputs.addBiasNode();
-		
+
 		/** Calculate the guessed output */
-		
+
 		// apply weights to first layer
 		Matrix hiddenInputs = whi.dot(inputs);
 		// pass through relu function
 		hiddenOutputs = hiddenInputs.relu();
 		// add bias
 		hiddenOutputs = hiddenOutputs.addBiasNode();
-		
-		//apply layer two weights
-	    Matrix hiddenInputs2 = whh.dot(hiddenOutputs);
-	    hiddenOutputs2 = hiddenInputs2.relu();
-	    hiddenOutputs2 = hiddenOutputs2.addBiasNode();
-		
-	    //apply level three weights
-	    Matrix outputInputs = woh.dot(hiddenOutputs2);
-	    outputs = outputInputs.sigmoid();
 
-	    //convert to an array and return
-	    return outputs.toArray();
+		// apply layer two weights
+		Matrix hiddenInputs2 = whh.dot(hiddenOutputs);
+		hiddenOutputs2 = hiddenInputs2.relu();
+		hiddenOutputs2 = hiddenOutputs2.addBiasNode();
+
+		// apply level three weights
+		Matrix outputInputs = woh.dot(hiddenOutputs2);
+		outputs = outputInputs.sigmoid();
+
+		// convert to an array and return
+		return outputs.toArray();
 	}
 
 	// crossover function for genetic algorithm
@@ -176,17 +176,16 @@ public class NeuralNet {
 		woh.fromArray(wohArr);
 	}
 
-
-	//draw the genome on the screen
+	// draw the genome on the screen
 	public void draw(int startX, int startY, int w, int h) {
-	    
+
 		int inputSpacing = h / (inputNodes + 2);
 		int hiddenSpacing1 = h / (hiddenNodes1 + 2);
 		int hiddenSpacing2 = h / (hiddenNodes2 + 2);
 		int outputSpacing = h / (outputNodes + 1);
-		
+
 		double weight = 0;
-		
+
 		for (int i = 0; i < whi.cols; i++) {
 			for (int j = 0; j < whi.rows; j++) {
 				weight = whi.matrix[j][i];
@@ -203,10 +202,10 @@ public class NeuralNet {
 				}
 				p.strokeWeight(sw);
 				if (sw > 1)
-					p.line(startX, startY + (i + 1) * inputSpacing, startX + w / 3, startY + (j + 1)* hiddenSpacing1);
+					p.line(startX, startY + (i + 1) * inputSpacing, startX + w / 3, startY + (j + 1) * hiddenSpacing1);
 			}
 		}
-		
+
 		for (int i = 0; i < whh.cols; i++) {
 			for (int j = 0; j < whh.rows; j++) {
 				weight = whh.matrix[j][i];
@@ -223,10 +222,11 @@ public class NeuralNet {
 				}
 				p.strokeWeight(sw);
 				if (sw > 1.5)
-					p.line(startX + w / 3, startY + (i+1) * hiddenSpacing1, startX + 2 * w / 3, startY + (j+1) * hiddenSpacing2);
+					p.line(startX + w / 3, startY + (i + 1) * hiddenSpacing1, startX + 2 * w / 3,
+							startY + (j + 1) * hiddenSpacing2);
 			}
 		}
-		
+
 		for (int i = 0; i < woh.cols; i++) {
 			for (int j = 0; j < woh.rows; j++) {
 				weight = woh.matrix[j][i];
@@ -242,29 +242,30 @@ public class NeuralNet {
 					sw = 3;
 				}
 				p.strokeWeight(sw);
-				p.line(startX +  2 * w / 3, startY + (i+1) * hiddenSpacing2, startX + w, startY + (j+1) * outputSpacing);
+				p.line(startX + 2 * w / 3, startY + (i + 1) * hiddenSpacing2, startX + w,
+						startY + (j + 1) * outputSpacing);
 			}
 		}
 
-		p.stroke(255,255,0);
+		p.stroke(255, 255, 0);
 		p.strokeWeight(1);
 		p.fill(0);
 		for (int i = 0; i < inputNodes + 1; i++) {
 			p.fill(0);
 			if (inputs.matrix[i][0] > .85)
-				p.fill(255,255,0);
-			p.circle(startX, startY + (i+1) * inputSpacing, 10);
+				p.fill(255, 255, 0);
+			p.circle(startX, startY + (i + 1) * inputSpacing, 10);
 		}
 		for (int i = 0; i < hiddenNodes1 + 1; i++) {
 			if (hiddenOutputs.matrix[i][0] > .85)
-				p.fill(255,255,0);
-			p.circle(startX + w / 3, startY + (i+1) * hiddenSpacing1, 10);
+				p.fill(255, 255, 0);
+			p.circle(startX + w / 3, startY + (i + 1) * hiddenSpacing1, 10);
 			p.fill(0);
 		}
 		for (int i = 0; i < hiddenNodes2 + 1; i++) {
 			if (hiddenOutputs2.matrix[i][0] > .85)
-				p.fill(255,255,0);
-			p.circle(startX +  2 * w / 3, startY + (i+1) * hiddenSpacing2, 10);
+				p.fill(255, 255, 0);
+			p.circle(startX + 2 * w / 3, startY + (i + 1) * hiddenSpacing2, 10);
 			p.fill(0);
 		}
 		double max = 0;
@@ -277,8 +278,8 @@ public class NeuralNet {
 		}
 		for (int i = 0; i < outputNodes; i++) {
 			if (i == maxIndex)
-				p.fill(255,255,0);
-			p.circle(startX + w, startY + (i+1) * outputSpacing, 10);
+				p.fill(255, 255, 0);
+			p.circle(startX + w, startY + (i + 1) * outputSpacing, 10);
 			p.fill(0);
 		}
 		p.fill(0);
